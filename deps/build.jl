@@ -40,6 +40,7 @@ end
 
 windows_flag = Sys.iswindows()
 apple_flag = Sys.isapple()
+apple_silicon_flag = apple_flag && Sys.ARCH === :aarch64
 file_extension = nothing
 obj_files = []
 ignore_jll = read_env("ODEINTERFACE_IGNORE_JLL") != nothing
@@ -348,6 +349,17 @@ function build_colnew(path::AbstractString)
   return nothing
 end
 
+function build_coldae(path::AbstractString)
+  build_script_write_headline("coldae")
+  options = Dict(
+    "add_flags_i64" => ["-w", "-std=legacy"],
+    "add_flags_i32" => ["-w", "-std=legacy"],
+  )
+  compile_gfortran(path, "coldae", options)
+  link_gfortran(path, ["coldae"])
+  return nothing
+end
+
 function build_bvpm2(path::AbstractString)
   build_script_write_headline("bvpm2")
   opt = Dict(
@@ -382,6 +394,7 @@ function build_all(dir_of_src::AbstractString)
 
   build_bvpsol(dir_of_src)
   build_colnew(dir_of_src)
+  build_coldae(dir_of_src)
   build_bvpm2(dir_of_src)
 
   del_obj_files()
@@ -440,14 +453,14 @@ if build_script != nothing
   create_build_script()
 else
   # to build or not-to-build?
-  if VERSION >= v"1.3" && !ignore_jll
+  if VERSION >= v"1.3" && !ignore_jll && !apple_silicon_flag
     # Julia supports Artifacts and we don't build anything and we try
     # to use ODEInterface_jll
     exit()
   else
-    # either Julia version before v1.3 or we were asked to ignore
-    # ODEInterface_jll
-    # => in both cases we try to build:
+    # either Julia version is older than v1.3, we were asked to ignore
+    # ODEInterface_jll or we are on AppleSilicon
+    # => in all cases we try to build:
     adapt_to_os()
     build_with_gfortran()
   end

@@ -62,6 +62,10 @@
     systems using collocation.
     Written by U. Ascher, G. Bader, see
     [Colnew Homepage](https://people.sc.fsu.edu/~jburkardt/f77_src/colnew/colnew.html).
+  * coldae: a multi-point boundary value differential algebraic equations solver
+    for mixed order systems using collocation.
+    Written by U. Ascher, R. Spiteri, see
+    [Coldae Homepage](https://www.netlib.org/ode/coldae.f).
   * BVP_M-2: a boundary value problem solver for the numerical solution of
     boundary value ordinary differential equations with defect and global error control.
     Written by J. J. Boisvert, P.H. Muir and R. J. Spiteri, see
@@ -136,6 +140,8 @@ macro import_huge()
     @ODEInterface.import_DLddebdf
     @ODEInterface.import_colnew
     @ODEInterface.import_DLcolnew
+    @ODEInterface.import_coldae
+    @ODEInterface.import_DLcoldae
     @ODEInterface.import_bvpm2
     @ODEInterface.import_DLbvpm2
   end
@@ -159,6 +165,7 @@ macro import_normal()
     @ODEInterface.import_ddeabm
     @ODEInterface.import_ddebdf
     @ODEInterface.import_colnew
+    @ODEInterface.import_coldae
     @ODEInterface.import_options
     @ODEInterface.import_OPTcommon
   end
@@ -585,6 +592,7 @@ include("./Bvpsol.jl")
 include("./Deabm.jl")
 include("./Debdf.jl")
 include("./Colnew.jl")
+include("./Coldae.jl")
 include("./Bvpm2.jl")
 
 include("./Call.jl")
@@ -597,6 +605,7 @@ function __init__()
   # at this stage dlSolversInfo should be empty, but
   # just to be sure
   empty!(dlSolversInfo)
+  loadODESolvers()
 end
 
 
