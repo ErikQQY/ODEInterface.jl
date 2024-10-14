@@ -1,3 +1,9 @@
+> Implemented COLDAE in this fork, to use COLDAE from ODEInterface.jl:
+> 1. Clone this fork to local: `git clone https://github.com/ErikQQY/ODEInterface.jl`.
+> 2. Build the necessary libraries by running build.jl: `julia deps/build.jl`.(Ensure gfortran is installed)
+> 3. Dev this repository.
+> 3. Try out the example in ex8.jl.
+
 # ODEInterface
 
 [![Travis](https://travis-ci.org/luchr/ODEInterface.jl.svg?branch=master)](https://travis-ci.org/luchr/ODEInterface.jl)
